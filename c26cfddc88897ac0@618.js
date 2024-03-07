@@ -430,7 +430,7 @@ async function _loadSvg($0,svgFile)
 
 
 async function _svgtext(FileAttachment){return(
-await FileAttachment("Untitled-6-01.svg").text()
+await FileAttachment("testimg.svg").text()
 )}
 
 function _testimg(html,svgtext){return(
@@ -473,15 +473,11 @@ function _set_testimg_palette(palette,imgclasses,color_order,d3,testimg)
 }
 
 
-function _testimg2(FileAttachment){return(
-FileAttachment("testimg@2.svg").image()
-)}
-
 export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["Untitled-6-01.svg", {url: new URL("./files/f398b134e6529ebb5b3b1228ce6d1b05a2b79327a69ac9b72d47b8ee347f9b8579765ae701bcb58fbdaebccecb8a572c1a9af1d077095d081fbab0e3076d437e.svg", import.meta.url), mimeType: "image/svg+xml", toString}]
+    ["testimg.svg", {url: new URL("./files/9a4e0074a603724679149f4798ecae676cfaa7929b2b71c7d1b6cbf49f34b43b6e48889bb7447bccddebe1825235ff052e5b55d648a3a092da644f6cf5071384.svg", import.meta.url), mimeType: "image/svg+xml", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
@@ -524,6 +520,5 @@ export default function define(runtime, observer) {
   main.variable(observer("mutable color_order")).define("mutable color_order", ["Mutable", "initial color_order"], (M, _) => new M(_));
   main.variable(observer("color_order")).define("color_order", ["mutable color_order"], _ => _.generator);
   main.variable(observer("set_testimg_palette")).define("set_testimg_palette", ["palette","imgclasses","color_order","d3","testimg"], _set_testimg_palette);
-  main.variable(observer("testimg2")).define("testimg2", ["FileAttachment"], _testimg2);
   return main;
 }
