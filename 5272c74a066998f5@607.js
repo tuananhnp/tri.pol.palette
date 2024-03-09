@@ -2,7 +2,7 @@ import define1 from "./a01396c4fb4e9672@83.js";
 import define2 from "./8d271c22db968ab0@160.js";
 
 function _1(md){return(
-md`# Palette from Trilinear Polarity`
+md`# Palette from triangle on a gradient - save SVG`
 )}
 
 function _svgFile(Inputs){return(
@@ -13,7 +13,7 @@ function _3(paletteDisplay,palette){return(
 paletteDisplay(palette)
 )}
 
-function _4(htl,$0,testimg)
+function _display(htl,$0,testimg)
 {
   let panel = htl.html`<div>`;
   let pane1 = $0;
@@ -26,7 +26,7 @@ function _4(htl,$0,testimg)
     display: "inline-block",
     verticalAlign: "middle",
     paddingLeft: "20px",
-    width: "520px"
+    width: "520"
   });
   panel.append(pane1, pane2);
   return panel;
@@ -64,12 +64,47 @@ function _mode(Inputs){return(
 Inputs.select(["lrgb", "rgb"], { label: "Color Space" })
 )}
 
-function _9(htl,$0)
+function _9(htl,display,XMLSerializer)
+{
+  const save = htl.html`<button>Save SVG`;
+  save.onclick = () => {
+    var link = document.createElement("a");
+    link.download = "example.svg";
+
+    const svg = display.children[1];
+    const serializer = new XMLSerializer();
+    let source = serializer.serializeToString(svg);
+
+    if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+      source = source.replace(
+        /^<svg/,
+        '<svg xmlns="http://www.w3.org/2000/svg"'
+      );
+    }
+    if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+      source = source.replace(
+        /^<svg/,
+        '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
+      );
+    }
+
+    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+    const url =
+      "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+    link.href = url;
+    link.click();
+  };
+  return save;
+}
+
+
+function _10(htl,$0)
 {
   const save = htl.html`<button>Save Gradient as PNG`;
   save.onclick = () => {
     var link = document.createElement("a");
-    link.download = "gradient.png";
+    link.download = "image.png";
     const canvas = $0.children[0];
     canvas.drawImageData();
     link.href = canvas.toDataURL("image/png");
@@ -80,7 +115,7 @@ function _9(htl,$0)
 }
 
 
-function _10(md){return(
+function _11(md){return(
 md`<hr>`
 )}
 
@@ -484,14 +519,15 @@ export default function define(runtime, observer) {
   main.variable(observer("viewof svgFile")).define("viewof svgFile", ["Inputs"], _svgFile);
   main.variable(observer("svgFile")).define("svgFile", ["Generators", "viewof svgFile"], (G, _) => G.input(_));
   main.variable(observer()).define(["paletteDisplay","palette"], _3);
-  main.variable(observer()).define(["htl","viewof palette","testimg"], _4);
+  main.variable(observer("display")).define("display", ["htl","viewof palette","testimg"], _display);
   main.variable(observer("shuffle")).define("shuffle", ["htl","d3","mutable color_order"], _shuffle);
   main.variable(observer("viewof gradientType")).define("viewof gradientType", ["Inputs"], _gradientType);
   main.variable(observer("gradientType")).define("gradientType", ["Generators", "viewof gradientType"], (G, _) => G.input(_));
   main.variable(observer("rgb")).define("rgb", ["form","html"], _rgb);
   main.variable(observer("mode")).define("mode", ["Inputs"], _mode);
-  main.variable(observer()).define(["htl","viewof palette"], _9);
-  main.variable(observer()).define(["md"], _10);
+  main.variable(observer()).define(["htl","display","XMLSerializer"], _9);
+  main.variable(observer()).define(["htl","viewof palette"], _10);
+  main.variable(observer()).define(["md"], _11);
   main.variable(observer("viewof palette")).define("viewof palette", ["DOM","rgb","gradientType","colorInterpolationImgDataTriangle","mode","colorInterpolationImgData","htl","Event","triangleInteraction"], _palette);
   main.variable(observer("palette")).define("palette", ["Generators", "viewof palette"], (G, _) => G.input(_));
   main.variable(observer("colorInterpolationImgData")).define("colorInterpolationImgData", ["culori"], _colorInterpolationImgData);
