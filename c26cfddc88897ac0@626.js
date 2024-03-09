@@ -26,7 +26,7 @@ function _4(htl,$0,testimg)
     display: "inline-block",
     verticalAlign: "middle",
     paddingLeft: "20px",
-    width: "500px"
+    width: "520px"
   });
   panel.append(pane1, pane2);
   return panel;
@@ -443,7 +443,7 @@ function _imgclasses(d3,testimg)
   d3.select(testimg)
     .selectAll("path")
     .each(function () {
-      classes.add(d3.select(this).attr("class"));
+      classes.add(d3.select(this).attr("fill"));
     });
   return classes;
 }
@@ -467,7 +467,7 @@ function _set_testimg_palette(palette,imgclasses,color_order,d3,testimg)
     .selectAll("path")
     .each(function () {
       let path = d3.select(this);
-      path.style("fill", color[path.attr("class")]);
+      path.style("fill", color[path.attr("fill")]);
       //console.log(path.attr("class"), path.attr("fill"));
     });
 }
@@ -477,7 +477,7 @@ export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["testimg.svg", {url: new URL("./vectors/testimg.svg", import.meta.url), mimeType: "image/svg+xml", toString}]
+    ["testimg@5.svg", {url: new URL("./vectors/testimg.svg", import.meta.url), mimeType: "image/svg+xml", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
