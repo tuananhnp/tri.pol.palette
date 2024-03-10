@@ -2,7 +2,7 @@ import define1 from "./a01396c4fb4e9672@83.js";
 import define2 from "./8d271c22db968ab0@160.js";
 
 function _1(md){return(
-md`# Palette from triangle on a gradient - save SVG`
+md`# TriPol Palette Tool`
 )}
 
 function _svgFile(Inputs){return(
