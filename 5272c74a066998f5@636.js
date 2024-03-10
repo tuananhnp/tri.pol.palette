@@ -35,7 +35,7 @@ function _display(htl,$0,testimg)
 
 function _shuffle(htl,d3,$0)
 {
-  let button = htl.html`<button>Shuffle Colors`;
+  let button = htl.html`<button>Shuffle Colors in SVG`;
   button.onclick = () => {
     d3.shuffle($0.value);
     $0.value = $0.value; // trigger update
@@ -43,12 +43,6 @@ function _shuffle(htl,d3,$0)
   return button;
 }
 
-
-function _gradientType(Inputs){return(
-Inputs.select(["Triangle - 3 colors", "Regtangle - 4 colors"], {
-  label: "Gradient Geometry"
-})
-)}
 
 function _rgb(form,html){return(
 form(html`<form>
@@ -58,6 +52,12 @@ form(html`<form>
 <input name="c3" type='color' value='#00AAFF'/>
 <input name="c4" type='color' value='#FFFFFF'/>
 </form>`)
+)}
+
+function _gradientType(Inputs){return(
+Inputs.select(["Triangle - 3 colors", "Regtangle - 4 colors"], {
+  label: "Gradient Geometry"
+})
 )}
 
 function _mode(Inputs){return(
@@ -484,8 +484,8 @@ function _imgclasses(d3,testimg)
 }
 
 
-function _color_order(d3){return(
-d3.range(7)
+function _color_order(){return(
+[3, 4, 5, 6, 0, 1, 2]
 )}
 
 function _set_testimg_palette(palette,imgclasses,color_order,d3,testimg)
@@ -512,7 +512,7 @@ export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["testimg.svg", {url: new URL("./vectors/testimg.svg", import.meta.url), mimeType: "image/svg+xml", toString}]
+    ["testimg.svg", {url: new URL("./files/01a0cab4016f7879953a0f3af8bb52f8925f61491ccc8395efbfe893530cec2d4ded0a2e39f4caa74acb420892d164011e9174bf79fb84e69195e7ecd782cbd5.svg", import.meta.url), mimeType: "image/svg+xml", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
@@ -521,9 +521,9 @@ export default function define(runtime, observer) {
   main.variable(observer()).define(["paletteDisplay","palette"], _3);
   main.variable(observer("display")).define("display", ["htl","viewof palette","testimg"], _display);
   main.variable(observer("shuffle")).define("shuffle", ["htl","d3","mutable color_order"], _shuffle);
+  main.variable(observer("rgb")).define("rgb", ["form","html"], _rgb);
   main.variable(observer("viewof gradientType")).define("viewof gradientType", ["Inputs"], _gradientType);
   main.variable(observer("gradientType")).define("gradientType", ["Generators", "viewof gradientType"], (G, _) => G.input(_));
-  main.variable(observer("rgb")).define("rgb", ["form","html"], _rgb);
   main.variable(observer("mode")).define("mode", ["Inputs"], _mode);
   main.variable(observer()).define(["htl","display","XMLSerializer"], _9);
   main.variable(observer()).define(["htl","viewof palette"], _10);
@@ -552,7 +552,7 @@ export default function define(runtime, observer) {
   main.variable(observer("svgtext")).define("svgtext", ["mutable svgtext"], _ => _.generator);
   main.variable(observer("testimg")).define("testimg", ["html","svgtext"], _testimg);
   main.variable(observer("imgclasses")).define("imgclasses", ["d3","testimg"], _imgclasses);
-  main.define("initial color_order", ["d3"], _color_order);
+  main.define("initial color_order", _color_order);
   main.variable(observer("mutable color_order")).define("mutable color_order", ["Mutable", "initial color_order"], (M, _) => new M(_));
   main.variable(observer("color_order")).define("color_order", ["mutable color_order"], _ => _.generator);
   main.variable(observer("set_testimg_palette")).define("set_testimg_palette", ["palette","imgclasses","color_order","d3","testimg"], _set_testimg_palette);
